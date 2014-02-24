@@ -4,8 +4,6 @@
 # JFeatureLib log file not needed
 *.log
 
- #
-
 # C extensions
 *.so
 
