@@ -1,7 +1,16 @@
+# generic python unwanted files
 *.py[cod]
+
+# JFeatureLib log file not needed
+*.log
+
+ #
 
 # C extensions
 *.so
+
+# Java ignores
+*.class
 
 # Packages
 *.egg
@@ -26,6 +35,24 @@ pip-log.txt
 .coverage
 .tox
 nosetests.xml
+
+# eclipse specific git ignore
+.project
+.metadata
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+
+# Locally stored "Eclipse launch configurations"
+*.launch
 
 # Translations
 *.mo
