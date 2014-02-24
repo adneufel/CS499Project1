@@ -1,0 +1,48 @@
+import os, Image
+import matplotlib.image as mpimp
+from sklearn.feature_extraction import image
+
+tempDir = "./TempImages"
+SortedImgsDir = "./SortedImages"
+ALPYesDir = SortedImgsDir + "/ALP-Yes"
+ALPNoDir = SortedImgsDir + "/ALP-No"
+digitYesDir = SortedImgsDir + "/4or5-Yes"
+digitNoDir = SortedImgsDir + "/4or5-No"
+
+# directory is a folder full of images that need to be loaded
+def readInDir(directory):
+	images = []
+	for filename in os.listdir(directory):
+		image = Image.open(directory + "/" + filename)
+		images.append(image)
+	return images
+
+# convert Image obj to matrix
+def ConvertToMat(image):
+	tempfile = tempDir + '/' + "image.png"
+	img.save(tempfile)
+	return mpimp.imread(tempfile)
+
+# remove any unneeded 
+def cleanTemp():
+	for filename in os.listdir(tempDir):
+		os.remove(tempDir + "/" + filename)
+
+# read image files from directories into lists as Image objs
+ALPYesImgs = readInDir(ALPYesDir)
+ALPNoImgs = readInDir(ALPNoDir)
+digitYesImgs = readInDir(digitYesDir)
+digitNoImgs = readInDir(digitNoDir)
+
+# Now convert all the images to matrix numbers
+ALPYesMats = [ConvertToMat(img) for img in ALPYesImgs]
+ALPNoMats = [ConvertToMat(img) for img in ALPNoImgs]
+digitYesMats = [ConvertToMat(img) for img in digitYesImgs]
+digitNoMats = [ConvertToMat(img) for img in digitNoImgs]
+
+patches = image.extract_patches_2d(ALPYesMats[0], (3, 3), max_patches=2, random_state=0)
+print patches
+print patches.shape
+
+# clean up, clean up, everybody everywhere
+cleanTemp()
