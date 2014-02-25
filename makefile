@@ -22,8 +22,8 @@ build1:
 	#python constructarff.py -d $(ALPFALSE) -p 1 -c false 
 
 	echo Combining arff files...
-	# ?
-	# Should create the file specified in ARFF
+# ?
+# Should create the file specified in ARFF
 	
 	echo Building model...
 	java weka.classifiers.functions.MultilayerPerceptron -L 0.3 -M 0.2 -N 500 -V 0 -S 0 -E 20 -H a -t $(ARFF) -d $(MODEL)
@@ -35,8 +35,8 @@ build2:
 	#python constructarff.py -d $(FOURFIVE-OTHER) -p 2 -c false
 
 	echo Combining arff files...
-	# ?
-	# should create the file specified in ARFF
+# ?
+# should create the file specified in ARFF
 
 	echo Building model...
 	java weka.classifiers.functions.MultilayerPerceptron -L 0.3 -M 0.2 -N 500 -V 0 -S 0 -E 20 -H a -t $(ARFF) -d $(MODEL)
