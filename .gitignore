@@ -6,6 +6,7 @@
 
 # Temporary data files not needed
 *.csv
+*~
 
 # C extensions
 *.so
