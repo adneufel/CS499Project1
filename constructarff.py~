@@ -1,6 +1,7 @@
 import subprocess
 import os
 import csv
+
 # full path to java for dumb lab machines
 javapath = "/usr/lib/jvm/java-7-openjdk-amd64/bin/"
 
@@ -19,22 +20,21 @@ digit5Dir = '4or5-5'
 sortedImgsPath = os.path.join('.', 'SortedImages')
 
 # class string
-alpClassList = " { true,false }"
-digitClassList = " { four,five,false}"
+alpClassStr = " { true,false }"
+digitClassStr = " { four,five,false}"
 
 def writeNewLine(fout):
-    
     fout.write('\n')
 
 def writeLine(fout, str):
     fout.write(str + '\n')
- 
+
 # attrList is the names of the attributes in valueRows
 # valueRows is a list of rows of values
 def writeArff(directory, filename, relationName, attrList, valueRows, classString):
     dirpath = os.path.join(sortedImgsPath, directory, filename)
     
-    arff = open(dirpath, "w")
+    arff = open(dirpath, "w")"
     
     writeLine(arff, "@RELATION " + relationName)
     writeNewLine(arff)
@@ -73,7 +73,7 @@ def genCSV(dirpath, algorithm, classStr):
 
     return cmdlist[12]
 
-def preprocessDir(directory, algorithms, classStr, classList):
+def preprocessDir(directory, algorithms, classStr):
     dirpath = os.path.join(sortedImgsPath, directory)
     # create a csv file for each algorithm type
     csvFiles = []
@@ -141,14 +141,14 @@ def preprocessDir(directory, algorithms, classStr, classList):
         list.append(classStr)
     attrList.append("class")
     
-    writeArff(directory, arffname, directory, attrList, valueRows, classList)
+    writeArff(directory, arffname, directory, attrList, valueRows)
 
 def preprocess():
-    #preprocessDir(alpYesDir, alpAlgos, "true", alpClassList)
-    #preprocessDir(alpNoDir, alpAlgos, "false", alpClassList)
-    preprocessDir(digit4Dir, digitAlgos, "four", digitClassList)
-    preprocessDir(digit5Dir, digitAlgos, "five", digitClassList)
-    preprocessDir(digitNoDir, digitAlgos, "false", digitClassList)
+    #preprocessDir(alpYesDir, alpAlgos, "true")
+    #preprocessDir(alpNoDir, alpAlgos, "false")
+    preprocessDir(digit4Dir, digitAlgos, "four")
+    preprocessDir(digit5Dir, digitAlgos, "five")
+    preprocessDir(digitNoDir, digitAlgos, "false")
 
 def main():
     preprocess()

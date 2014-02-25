@@ -4,6 +4,9 @@
 # JFeatureLib log file not needed
 *.log
 
+# Temporary data files not needed
+*.csv
+
 # C extensions
 *.so
 
