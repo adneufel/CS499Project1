@@ -1,6 +1,9 @@
 import subprocess
 import os
 import csv
+import sys
+import argparse
+
 # full path to java for dumb lab machines
 javapath = "/usr/lib/jvm/java-7-openjdk-amd64/bin/"
 
@@ -20,10 +23,12 @@ sortedImgsPath = os.path.join('.', 'SortedImages')
 
 # class string
 alpClassList = " { true,false }"
-digitClassList = " { four,five,false}"
+digitClassList = " { four,five,false }"
+
+# bad global to set whether test or nto
+isTest = False
 
 def writeNewLine(fout):
-    
     fout.write('\n')
 
 def writeLine(fout, str):
@@ -31,9 +36,8 @@ def writeLine(fout, str):
  
 # attrList is the names of the attributes in valueRows
 # valueRows is a list of rows of values
-def writeArff(directory, filename, relationName, attrList, valueRows, classString):
-    dirpath = os.path.join(sortedImgsPath, directory, filename)
-    
+def writeArff(directory, arffname, relationName, attrList, valueRows, classString):
+    dirpath = os.path.join(directory, arffname)
     arff = open(dirpath, "w")
     
     writeLine(arff, "@RELATION " + relationName)
@@ -42,12 +46,17 @@ def writeArff(directory, filename, relationName, attrList, valueRows, classStrin
     for attr in attrList[:-1]:
         writeLine(arff, "@ATTRIBUTE " + attr + '\t' + "NUMERIC")
     # ... then print the mode attribute
-    writeLine(arff, "@ATTRIBUTE " + attrList[-1] + classString)
+    if not isTest:
+        print "NOT A TEST"
+        writeLine(arff, "@ATTRIBUTE " + attrList[-1] + classString)
     writeNewLine(arff)
     writeLine(arff, "@DATA")
     writeNewLine(arff)
     for row in valueRows:
-        writeLine(arff, ",".join(row))
+        if isTest:
+            writeLine(arff, ",".join(row[:-1]))
+        else:
+            writeLine(arff, ",".join(row))
     
     arff.close()
 
@@ -70,15 +79,24 @@ def genCSV(dirpath, algorithm, classStr):
     
     # Now execute the command!
     subprocess.call(cmdlist)
-
+    
     return cmdlist[12]
 
-def preprocessDir(directory, algorithms, classStr, classList):
-    dirpath = os.path.join(sortedImgsPath, directory)
+def preprocessDir(directory, partNum, classStr):
+    
+    classList = ""
+    algorithms = []
+    if partNum == 1:
+        algorithms = alpAlgos
+        classList = alpClassList
+    else:
+        algorithms = digitAlgos
+        classList = digitClassList
+    
     # create a csv file for each algorithm type
     csvFiles = []
     for algo in algorithms:
-        filename = genCSV(dirpath, algo, classStr)
+        filename = genCSV(directory, algo, classStr)
         csvFiles.append(filename)
  
     # now load those csv files and combine them into an arff
@@ -110,8 +128,9 @@ def preprocessDir(directory, algorithms, classStr, classList):
             del row[1]  # remove filename vals
             row.append(row[0])
             del row[0]
-    # writeArff(filename, relationName, attrList, valueRows):
-    arffname = directory + ".arff"
+    
+    name = directory.replace('/', '')
+    arffname = name + ".arff"
     
     # create attribute list and values list from all the loaded files
     attrList = []
@@ -133,18 +152,26 @@ def preprocessDir(directory, algorithms, classStr, classList):
         list.append(classStr)
     attrList.append("class")
     
-    writeArff(directory, arffname, directory, attrList, valueRows, classList)
-
-def preprocess():
-    preprocessDir(alpYesDir, alpAlgos, "true", alpClassList)
-    preprocessDir(alpNoDir, alpAlgos, "false", alpClassList)
-    #preprocessDir(digit4Dir, digitAlgos, "four", digitClassList)
-    #preprocessDir(digit5Dir, digitAlgos, "five", digitClassList)
-    #preprocessDir(digitNoDir, digitAlgos, "false", digitClassList)
+    writeArff(directory, arffname, name, attrList, valueRows, classList)
 
 def main():
-    preprocess()
-    print "Preprocessing Complete"
+    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser.add_argument("-p", help="the type of processing; part [1, 2]",
+                        dest="part", type=str, required=True, choices="12")
+    parser.add_argument("-d", help="the directory of images to process",
+                        dest="dir", type=str, required=True)
+    parser.add_argument("-c", help="the class type of the images",
+                        dest="classtype", type=str, required=True)
+    parser.add_argument("-t", help="state that this processing is to create a test .arff",
+                        action="store_true", dest="test", required=False)
+    
+    args = parser.parse_args(sys.argv[1:])
+    global isTest
+    isTest = args.test
+    print isTest
+    preprocessDir(args.dir, args.part, args.classtype)
+    
+    print "Preprocessing Complete."
 
 if __name__ == "__main__":
     main()
