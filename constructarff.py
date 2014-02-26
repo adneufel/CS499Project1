@@ -10,7 +10,7 @@ javapath = "/usr/lib/jvm/java-7-openjdk-amd64/bin/"
 #alpAlgos = [ "AutoColorCorrelogram", "Gabor", "CEDD", "PHOG"]
 #digitAlgos = [ "AutoColorCorrelogram", "Gabor", "CEDD", "PHOG"]
 alpAlgos = [ "CEDD", "PHOG", "ColorHistogram", "ReferenceColorSimilarity"]
-digitAlgos = [ "CEDD", "PHOG"]
+digitAlgos = [ "CEDD", "PHOG", "ReferenceColorSimilarity"]
 
 # paths/dirs for image folders
 testDir = 'Test-Dir'
@@ -47,7 +47,6 @@ def writeArff(directory, arffname, relationName, attrList, valueRows, classStrin
         writeLine(arff, "@ATTRIBUTE " + attr + '\t' + "NUMERIC")
     # ... then print the mode attribute
     if not isTest:
-        print "NOT A TEST"
         writeLine(arff, "@ATTRIBUTE " + attrList[-1] + classString)
     writeNewLine(arff)
     writeLine(arff, "@DATA")
@@ -86,7 +85,7 @@ def preprocessDir(directory, partNum, classStr):
     
     classList = ""
     algorithms = []
-    if partNum == 1:
+    if partNum == "1":
         algorithms = alpAlgos
         classList = alpClassList
     else:
@@ -129,7 +128,7 @@ def preprocessDir(directory, partNum, classStr):
             row.append(row[0])
             del row[0]
     
-    name = directory.replace('/', '')
+    name = directory.replace('/', '').replace('\\', '')
     arffname = name + ".arff"
     
     # create attribute list and values list from all the loaded files
@@ -168,7 +167,6 @@ def main():
     args = parser.parse_args(sys.argv[1:])
     global isTest
     isTest = args.test
-    print isTest
     preprocessDir(args.dir, args.part, args.classtype)
     
     print "Preprocessing Complete."
