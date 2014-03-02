@@ -43,8 +43,6 @@ def main():
             exit(1)
     
     combineArffs(args.output, args.files)
-    
-    print "Arff combination complete"
 
 if __name__ == "__main__":
     main()

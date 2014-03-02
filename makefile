@@ -5,7 +5,8 @@ JAVA=/usr/lib/jvm/java-7-openjdk-amd64/bin/java
 ARFF=trainingdata.arff
 
 # The resultant model file
-MODEL=classifier.model
+ALPMODEL=arff.model
+FOURFIVEMODEL=4or5.arff
 
 # Folders!
 ALPTRUE=SortedImages/ALP-Yes
@@ -24,35 +25,29 @@ FOURFIVE-FOURARFF=$(FOURFIVE-FOUR)/SortedImages4or5-4.arff
 FOURFIVE-FIVEARFF=$(FOURFIVE-FIVE)/SortedImages4or5-5.arff
 FOURFIVE-OTHERARF=$(FOURFIVE-OTHER)/SortedImages4or5-No.arff
 
+build: build1 build2
+
 # Build the model for part 1
 build1:
-	echo Building arff files...
-	#python constructarff.py -d $(ALPTRUE) -p 1 -c true
-	#python constructarff.py -d $(ALPFALSE) -p 1 -c false 
-
-	echo Combining arff files...
-    #python combinearffs.arff -n $(ALPARFF) -f $(ALPTRUEARFF) $(ALPFALSEARFF)
-# ?
-# Should create the file specified in ARFF
-	
-	echo Building model...
-	java weka.classifiers.functions.MultilayerPerceptron -L 0.3 -M 0.2 -N 500 -V 0 -S 0 -E 20 -H a -t $(ARFF) -d $(MODEL)
+	echo Building part 1 arff files...
+	python constructarff.py -d $(ALPTRUE) -p 1 -c true
+	python constructarff.py -d $(ALPFALSE) -p 1 -c false 
+	echo Combining part 1 arff files into $(ALPARFF)...
+	python combinearffs.py -n $(ALPARFF) -f $(ALPTRUEARFF) $(ALPFALSEARFF)
+	echo Building part 1 model: $(ALPMODEL)...
+	$(JAVA) -classpath weka.jar weka.classifiers.functions.MultilayerPerceptron -L 0.3 -M 0.2 -N 500 -V 0 -S 0 -E 20 -H a -t $(ALPARFF) -d $(ALPMODEL)
 
 build2:
-	echo Building arff files...
-	#python constructarff.py -d $(FOURFIVE-FOUR) -p 2 -c four
-	#python constructarff.py -d $(FOURFIVE-FIVE) -p 2 -c five
-	#python constructarff.py -d $(FOURFIVE-OTHER) -p 2 -c false
-
-	echo Combining arff files...
-    #python combinearffs.py -n $(FOURFIVEARFF) -f $(FOURFIVE-FOURARFF) $FOURFIVE-FIVEARFF) $(FOURFIVE-OTHERARFF)
-# ?
-# should create the file specified in ARFF
-
-	echo Building model...
-	java weka.classifiers.functions.MultilayerPerceptron -L 0.3 -M 0.2 -N 500 -V 0 -S 0 -E 20 -H a -t $(ARFF) -d $(MODEL)
+	echo Building part 2 arff files...
+	python constructarff.py -d $(FOURFIVE-FOUR) -p 2 -c four
+	python constructarff.py -d $(FOURFIVE-FIVE) -p 2 -c five
+	python constructarff.py -d $(FOURFIVE-OTHER) -p 2 -c false
+	echo Combining part 2 arff files into $(FOURFIVEARFF)...
+	python combinearffs.py -n $(FOURFIVEARFF) -f $(FOURFIVE-FOURARFF) $(FOURFIVE-FIVEARFF) $(FOURFIVE-OTHERARFF)
+	echo Building part 2 model: $(FOURFIVEMODEL)...
+	$(JAVA) -classpath weka.jar weka.classifiers.functions.MultilayerPerceptron -L 0.3 -M 0.2 -N 500 -V 0 -S 0 -E 20 -H a -t $(FOURFIVEARFF) -d $(FOURFIVEMODEL)
 
 # Run tests
 test1:
 	#python constructarff.py -d $(TESTDIR) -1 -t -c "?"
-	java weka.classifiers.functions.MultilayerPerceptron -T $(TESTFILE) -l $(MODEL) -p 0
+	#java weka.classifiers.functions.MultilayerPerceptron -T $(TESTFILE) -l $(MODEL) -p 0

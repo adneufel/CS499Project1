@@ -168,8 +168,6 @@ def main():
     global isTest
     isTest = args.test
     preprocessDir(args.dir, args.part, args.classtype)
-    
-    print "Preprocessing Complete."
 
 if __name__ == "__main__":
     main()
