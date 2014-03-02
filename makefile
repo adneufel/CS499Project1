@@ -15,6 +15,15 @@ FOURFIVE-FOUR=SortedImages/4or5-4
 FOURFIVE-FIVE=SortedImages/4or5-5
 FOURFIVE-OTHER=SortedImages/4or5-No
 
+# arff files
+ALPARFF=ALP.arff
+ALPTRUEARFF=$(ALPTRUE)/SortedImagesALP-Yes.arff
+ALPFALSEARFF=$(ALPFALSE)/SortedImagesALP-No.arff
+FOURFIVEARFF=4or5.arff
+FOURFIVE-FOURARFF=$(FOURFIVE-FOUR)/SortedImages4or5-4.arff
+FOURFIVE-FIVEARFF=$(FOURFIVE-FIVE)/SortedImages4or5-5.arff
+FOURFIVE-OTHERARF=$(FOURFIVE-OTHER)/SortedImages4or5-No.arff
+
 # Build the model for part 1
 build1:
 	echo Building arff files...
@@ -22,6 +31,7 @@ build1:
 	#python constructarff.py -d $(ALPFALSE) -p 1 -c false 
 
 	echo Combining arff files...
+    #python combinearffs.arff -n $(ALPARFF) -f $(ALPTRUEARFF) $(ALPFALSEARFF)
 # ?
 # Should create the file specified in ARFF
 	
@@ -35,6 +45,7 @@ build2:
 	#python constructarff.py -d $(FOURFIVE-OTHER) -p 2 -c false
 
 	echo Combining arff files...
+    #python combinearffs.py -n $(FOURFIVEARFF) -f $(FOURFIVE-FOURARFF) $FOURFIVE-FIVEARFF) $(FOURFIVE-OTHERARFF)
 # ?
 # should create the file specified in ARFF
 
