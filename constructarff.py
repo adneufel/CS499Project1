@@ -39,11 +39,12 @@ def writeLine(fout, str):
 def writeArff(directory, arffname, relationName, attrList, valueRows, classString):
     dirpath = os.path.join(directory, arffname)
     arff = open(dirpath, "w")
-    
+    print attrList
     writeLine(arff, "@RELATION " + relationName)
     writeNewLine(arff)
     # print the numeric attributes
-    for attr in attrList[:-1]:
+    writeLine(arff, "@ATTRIBUTE " + attrList[0] + '\t' + "STRING")
+    for attr in attrList[1:-1]:
         writeLine(arff, "@ATTRIBUTE " + attr + '\t' + "NUMERIC")
     # ... then print the mode attribute
     if not isTest:
@@ -124,7 +125,6 @@ def preprocessDir(directory, partNum, classStr):
     # remove unneeded filename values and move true/false to end
     for file in loadedFiles:
         for row in file:
-            del row[1]  # remove filename vals
             row.append(row[0])
             del row[0]
     
@@ -140,13 +140,17 @@ def preprocessDir(directory, partNum, classStr):
         valueRows.append([])
         
         # convert from list of files into list of lists
-    for i in xrange(0, len(loadedFiles)):
+    attrList.extend(loadedFiles[0][0][:-1])
+    for j in xrange(1, len(loadedFiles[0])):
+            valueRows[j-1].extend(loadedFiles[0][j][:-1])
+    for i in xrange(1, len(loadedFiles)):
         file = loadedFiles[i]
         # concatenate all the attributes from diff files into a single long list
-        attrList.extend(file[0][:-1])
+        attrList.extend(file[0][1:-1])
         # concatenate all values for each data point into their respective lists
         for j in xrange(1, len(file)):
-            valueRows[j-1].extend(file[j][:-1])
+            valueRows[j-1].extend(file[j][1:-1])
+    
     for list in valueRows:
         list.append(classStr)
     attrList.append("class")

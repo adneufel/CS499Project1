@@ -9,6 +9,7 @@ def combineArffs(outfilename, argfiles):
     
     # now concatenate all data from other argfiles to outfilename
     outfile = open(outfilename, "a")
+    print argfiles
     for filename in argfiles[1:]:
         infile = open(filename)
         filelines = infile.readlines()
