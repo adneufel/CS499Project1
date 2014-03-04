@@ -38,8 +38,8 @@ build1:
 	@echo Combining part 1 arff files into $(ALPARFF)...
 	python combinearffs.py -n $(ALPARFF) -f $(ALPTRUEARFF) $(ALPFALSEARFF)
 	@echo Building part 1 model: $(ALPMODEL)...
-	@$(JAVA) -classpath weka.jar weka.filters.unsupervised.attribute.Remove -R 1 -i $(ALPARFF) -o $(TEMPARFF)
-	$(JAVA) -classpath weka.jar weka.classifiers.functions.MultilayerPerceptron -L 0.3 -M 0.2 -N 500 -V 0 -S 0 -E 20 -H a -t $(TEMPARFF) -d $(ALPMODEL)
+	#@$(JAVA) -classpath weka.jar weka.filters.unsupervised.attribute.Remove -R 1 -i $(ALPARFF) -o $(TEMPARFF)
+	#$(JAVA) -classpath weka.jar weka.classifiers.functions.MultilayerPerceptron -L 0.3 -M 0.2 -N 500 -V 0 -S 0 -E 20 -H a -t $(TEMPARFF) -d $(ALPMODEL)
 	@rm $(TEMPARFF) -f
 
 build2:
@@ -50,7 +50,7 @@ build2:
 	@echo Combining part 2 arff files into $(FOURFIVEARFF)...
 	python combinearffs.py -n $(FOURFIVEARFF) -f $(FOURFIVE-FOURARFF) $(FOURFIVE-FIVEARFF) $(FOURFIVE-OTHERARFF)
 	@echo Building part 2 model: $(FOURFIVEMODEL)...
-	$(JAVA) -classpath weka.jar weka.classifiers.functions.MultilayerPerceptron -L 0.3 -M 0.2 -N 500 -V 0 -S 0 -E 20 -H a -t $(FOURFIVEARFF) -d $(FOURFIVEMODEL)
+	#$(JAVA) -classpath weka.jar weka.classifiers.functions.MultilayerPerceptron -L 0.3 -M 0.2 -N 500 -V 0 -S 0 -E 20 -H a -t $(FOURFIVEARFF) -d $(FOURFIVEMODEL)
 
 # Run tests
 test1:
