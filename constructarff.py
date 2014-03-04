@@ -50,7 +50,7 @@ def writeArff(directory, arffname, relationName, attrList, valueRows, classStrin
         writeLine(arff, "@ATTRIBUTE " + attrList[-1] + classString)
     writeNewLine(arff)
     writeLine(arff, "@DATA")
-    writeNewLine(arff)
+    #writeNewLine(arff)
     for row in valueRows:
         if isTest:
             writeLine(arff, ",".join(row[:-1]))

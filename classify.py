@@ -58,7 +58,7 @@ def main():
 					numspaces -= 1
 
 				print filename + ":" + whitespace + classification
-
+				break
 
 if __name__ == "__main__":
     main()
