@@ -39,7 +39,6 @@ def writeLine(fout, str):
 def writeArff(directory, arffname, relationName, attrList, valueRows, classString):
     dirpath = os.path.join(directory, arffname)
     arff = open(dirpath, "w")
-    print attrList
     writeLine(arff, "@RELATION " + relationName)
     writeNewLine(arff)
     # print the numeric attributes
