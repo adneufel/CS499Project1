@@ -30,7 +30,7 @@ TEMPARFF=temp.arff
 
 build: build1 build2
 
-# Build the model for part 1
+# Build the model
 build1:
 	@echo Building part 1 arff files...
 	python constructarff.py -d $(ALPTRUE) -p 1 -c true
@@ -58,4 +58,11 @@ test1:
 	@#@python constructarff.py -d $(TESTDIR) -1 -t -c "?"
 	@$(JAVA) -classpath weka.jar weka.filters.unsupervised.attribute.Remove -R 1 -i $(ALPARFF) -o $(TEMPARFF)
 	@python classify.py $(ALPARFF) $(JAVA) -classpath weka.jar weka.classifiers.functions.SMO -T $(TEMPARFF) -l $(ALPMODEL) -p 0
+	@rm $(TEMPARFF) -f
+
+test2:
+	@echo "Testing images at $(TESTDIR)"
+	@#@python constructarff.py -d $(TESTDIR) -2 -t -c "?"
+	@$(JAVA) -classpath weka.jar weka.filters.unsupervised.attribute.Remove -R 1 -i $(FOURFIVEARFF) -o $(TEMPARFF)
+	@python classify.py $(ALPARFF) $(JAVA) -classpath weka.jar weka.classifiers.functions.SMO -T $(TEMPARFF) -l $(FOURFIVEMODEL) -p 0
 	@rm $(TEMPARFF) -f
