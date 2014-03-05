@@ -50,7 +50,9 @@ build2:
 	@echo Combining part 2 arff files into $(FOURFIVEARFF)...
 	python combinearffs.py -n $(FOURFIVEARFF) -f $(FOURFIVE-FOURARFF) $(FOURFIVE-FIVEARFF) $(FOURFIVE-OTHERARFF)
 	@echo Building part 2 model: $(FOURFIVEMODEL)...
+	@$(JAVA) -classpath weka.jar weka.filters.unsupervised.attribute.Remove -R 1 -i $(ALPARFF) -o $(TEMPARFF)
 	$(JAVA) -classpath weka.jar weka.classifiers.functions.SMO -C 1.0 -L 0.001 -P 1.0E-12 -N 0 -V -1 -W 1 -K "weka.classifiers.functions.supportVector.PolyKernel -C 250007 -E 1.0" -t $(FOURFIVEARFF) -d $(FOURFIVEMODEL)
+	@rm $(TEMPARFF) -f
 
 # Run tests
 test1:
