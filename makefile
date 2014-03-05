@@ -39,7 +39,7 @@ build1:
 	python combinearffs.py -n $(ALPARFF) -f $(ALPTRUEARFF) $(ALPFALSEARFF)
 	@echo Building part 1 model: $(ALPMODEL)...
 	@$(JAVA) -classpath weka.jar weka.filters.unsupervised.attribute.Remove -R 1 -i $(ALPARFF) -o $(TEMPARFF)
-	$(JAVA) -classpath weka.jar weka.classifiers.functions.MultilayerPerceptron -L 0.3 -M 0.2 -N 500 -V 0 -S 0 -E 20 -H a -t $(TEMPARFF) -d $(ALPMODEL)
+	$(JAVA) -classpath weka.jar weka.classifiers.functions.SMO -C 1.0 -L 0.001 -P 1.0E-12 -N 0 -V -1 -W 1 -K "weka.classifiers.functions.supportVector.PolyKernel -C 250007 -E 1.0" -t $(TEMPARFF) -d $(ALPMODEL)
 	@rm $(TEMPARFF) -f
 
 build2:
@@ -50,12 +50,12 @@ build2:
 	@echo Combining part 2 arff files into $(FOURFIVEARFF)...
 	python combinearffs.py -n $(FOURFIVEARFF) -f $(FOURFIVE-FOURARFF) $(FOURFIVE-FIVEARFF) $(FOURFIVE-OTHERARFF)
 	@echo Building part 2 model: $(FOURFIVEMODEL)...
-	$(JAVA) -classpath weka.jar weka.classifiers.functions.MultilayerPerceptron -L 0.3 -M 0.2 -N 500 -V 0 -S 0 -E 20 -H a -t $(FOURFIVEARFF) -d $(FOURFIVEMODEL)
+	$(JAVA) -classpath weka.jar weka.classifiers.functions.SMO -C 1.0 -L 0.001 -P 1.0E-12 -N 0 -V -1 -W 1 -K "weka.classifiers.functions.supportVector.PolyKernel -C 250007 -E 1.0" -t $(FOURFIVEARFF) -d $(FOURFIVEMODEL)
 
 # Run tests
 test1:
 	@echo "Testing images at $(TESTDIR)"
 	@#@python constructarff.py -d $(TESTDIR) -1 -t -c "?"
 	@$(JAVA) -classpath weka.jar weka.filters.unsupervised.attribute.Remove -R 1 -i $(ALPARFF) -o $(TEMPARFF)
-	@python classify.py $(ALPARFF) $(JAVA) -classpath weka.jar weka.classifiers.functions.MultilayerPerceptron -T $(TEMPARFF) -l $(ALPMODEL) -p 0
+	@python classify.py $(ALPARFF) $(JAVA) -classpath weka.jar weka.classifiers.functions.SMO -T $(TEMPARFF) -l $(ALPMODEL) -p 0
 	@rm $(TEMPARFF) -f
