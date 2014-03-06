@@ -1,0 +1,20 @@
+CMPUT 499 Project 1
+===================
+
+Building classifiers:		make build
+
+To build the classifiers for both parts of the assignment, simply run the command "make build". This will run our preprocessor on the images located in the SortedImages directory, then combine data on them into a pair of arff files (ALP.arff and 4or5.arff). We then run a weka classifier on these arff files to generate model files for testing new images (ALP.model and 4or5.model).
+
+If you prefer, you can build the models for part 1 and part 2 seperately with "make build1" and "make build2".
+
+
+
+Testing:					make test1 / make test2
+
+To test images, move the images you want to test into the directory Testing Part 1 (if you want to test whether they contain an Alberta License Plate) or Testing Part 2 (if they contain an Alberta License Plate and you want to determine the last character). These commands will print a simple results table that lists image filenames and the classifier's prediction about the image. The command "make test1" runs the test specified in part 1 of the project specification on the files in the Testing Part 1 directory, and the "make test2" command runs the test specified in part 2 of the project specification on the files in the Testing Part 2 directory.
+
+
+
+Requirements:
+
+The library that handles the majority of our preprocessing, JFeatureLib, requires Java 7 to run. Our makefile contains the location of the Java 7 binaries on the University of Alberta lab machines, but if they may be in a different location on other machines. If the build commands are failing due to java exceptions then you need to provide the makefile with the location of your java install. The top line of the makefile defines the JAVA macro - simply change this value to the location of the Java 7 binary file.

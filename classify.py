@@ -48,7 +48,7 @@ def main():
 				# The class is normally in the form "num:class"
 				# This strips off the prefix
 				classification = parts[2][parts[2].index(':') + 1:]
-				filename = arff[int(parts[0]) - 1]
+				filename = arff[int(parts[0]) - 1].lstrip('\"').rstrip('\"')
 
 				# Lazy formatting				
 				numspaces = 24 - len(filename)

@@ -5,7 +5,8 @@ import sys
 import argparse
 
 # full path to java for dumb lab machines
-javapath = "/usr/lib/jvm/java-7-openjdk-amd64/bin/"
+#javapath = "/usr/lib/jvm/java-7-openjdk-amd64/bin/"
+javapath = ""
 
 #alpAlgos = [ "AutoColorCorrelogram", "Gabor", "CEDD", "PHOG"]
 #digitAlgos = [ "AutoColorCorrelogram", "Gabor", "CEDD", "PHOG"]
@@ -23,9 +24,9 @@ sortedImgsPath = os.path.join('.', 'SortedImages')
 
 # class string
 alpClassList = " { true,false }"
-digitClassList = " { four,five,false }"
+digitClassList = " { four,five,other }"
 
-# bad global to set whether test or nto
+# bad global to set whether test or not
 isTest = False
 
 def writeNewLine(fout):
@@ -74,7 +75,7 @@ def genCSV(dirpath, algorithm, classStr):
     cmdlist[12] = os.path.join(dirpath, algorithm + ".csv") # save file into dir of images as [dirname.csv]
     
     if os.name == "posix": 
-        cmdlist[0] = javapath + "java"
+        cmdlist[0] = javapath
     
     # Now execute the command!
     subprocess.call(cmdlist)
@@ -166,10 +167,17 @@ def main():
                         dest="classtype", type=str, required=True)
     parser.add_argument("-t", help="state that this processing is to create a test .arff",
                         action="store_true", dest="test", required=False)
+    parser.add_argument("-j", help="the path to the java 1.7 binaries",
+                        dest="javapath", type=str, required=True)
     
     args = parser.parse_args(sys.argv[1:])
+
     global isTest
     isTest = args.test
+
+    global javapath
+    javapath = args.javapath
+
     preprocessDir(args.dir, args.part, args.classtype)
 
 if __name__ == "__main__":
