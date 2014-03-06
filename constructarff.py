@@ -10,8 +10,8 @@ javapath = ""
 
 #alpAlgos = [ "AutoColorCorrelogram", "Gabor", "CEDD", "PHOG"]
 #digitAlgos = [ "AutoColorCorrelogram", "Gabor", "CEDD", "PHOG"]
-alpAlgos = [ "CEDD", "PHOG", "ColorHistogram", "ReferenceColorSimilarity"]
-digitAlgos = [ "CEDD", "PHOG", "ReferenceColorSimilarity"]
+alpAlgos = [ "CEDD", "FCTH", "Gabor ", "PHOG", "ColorHistogram" ]
+digitAlgos = [ "CEDD", "FCTH", "Gabor", "PHOG" ]
 
 # paths/dirs for image folders
 testDir = 'Test-Dir'
