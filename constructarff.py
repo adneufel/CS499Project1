@@ -47,16 +47,18 @@ def writeArff(directory, arffname, relationName, attrList, valueRows, classStrin
     for attr in attrList[1:-1]:
         writeLine(arff, "@ATTRIBUTE " + attr + '\t' + "NUMERIC")
     # ... then print the mode attribute
-    if not isTest:
-        writeLine(arff, "@ATTRIBUTE " + attrList[-1] + classString)
+    #if not isTest:
+    #    writeLine(arff, "@ATTRIBUTE " + attrList[-1] + classString)
+    writeLine(arff, "@ATTRIBUTE " + attrList[-1] + classString)
     writeNewLine(arff)
     writeLine(arff, "@DATA")
     #writeNewLine(arff)
     for row in valueRows:
         if isTest:
-            writeLine(arff, ",".join(row[:-1]))
+            writeLine(arff, ",".join(row[:-1]) + ",?")
         else:
             writeLine(arff, ",".join(row))
+        #writeLine(arff, ",".join(row))
     
     arff.close()
 

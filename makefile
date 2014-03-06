@@ -16,8 +16,8 @@ FOURFIVE-FOUR=SortedImages/4or5-4
 FOURFIVE-FIVE=SortedImages/4or5-5
 FOURFIVE-OTHER=SortedImages/4or5-No
 
-TESTDIR1=Testing\ Part\ 1
-TESTDIR2=Testing\ Part\ 2
+TESTDIR1=TestingPart1
+TESTDIR2=TestingPart2
 
 # arff files
 ALPARFF=ALP.arff
@@ -28,7 +28,8 @@ FOURFIVE-FOURARFF=$(FOURFIVE-FOUR)/SortedImages4or5-4.arff
 FOURFIVE-FIVEARFF=$(FOURFIVE-FIVE)/SortedImages4or5-5.arff
 FOURFIVE-OTHERARFF=$(FOURFIVE-OTHER)/SortedImages4or5-No.arff
 
-TESTARFF=testing.arff
+TESTARFF1=$(TESTDIR1)/$(TESTDIR1).arff
+TESTARFF2=$(TESTDIR2)/$(TESTDIR2).arff
 
 # SMO complexity values
 ALP-C=0.21842105263157896
@@ -66,14 +67,14 @@ build2:
 # Run tests
 test1:
 	@echo Testing images at $(TESTDIR1)
-	@python constructarff.py -j $(JAVA) -d $(TESTDIR1) -p 1 -t -c "?"
-	@$(JAVA) -classpath weka.jar weka.filters.unsupervised.attribute.Remove -R 1 -i $(TESTARFF) -o $(TEMPARFF)
-	@python classify.py $(TESTARFF) $(JAVA) -classpath weka.jar weka.classifiers.functions.SMO -T $(TEMPARFF) -l $(ALPMODEL) -p 0
-	@rm $(TEMPARFF) $(TESTARFF) -f
+	@python constructarff.py -j $(JAVA) -d $(TESTDIR1) -p 1 -t -c "true"
+	@$(JAVA) -classpath weka.jar weka.filters.unsupervised.attribute.Remove -R 1 -i $(TESTARFF1) -o $(TEMPARFF)
+	@python classify.py $(TESTARFF1) $(JAVA) -classpath weka.jar weka.classifiers.functions.SMO -T $(TEMPARFF) -l $(ALPMODEL) -p 0
+	@rm $(TEMPARFF) $(TESTARFF1) -f
 
 test2:
 	@echo Testing images at $(TESTDIR2)
-	@python constructarff.py -j $(JAVA) -d $(TESTDIR2) -p 2 -t -c "?"
-	@$(JAVA) -classpath weka.jar weka.filters.unsupervised.attribute.Remove -R 1 -i $(TESTARFF) -o $(TEMPARFF)
-	@python classify.py $(TESTARFF) $(JAVA) -classpath weka.jar weka.classifiers.functions.SMO -T $(TEMPARFF) -l $(FOURFIVEMODEL) -p 0
-	@rm $(TEMPARFF) $(TESTARFF) -f
+	@python constructarff.py -j $(JAVA) -d $(TESTDIR2) -p 2 -t -c "four"
+	@$(JAVA) -classpath weka.jar weka.filters.unsupervised.attribute.Remove -R 1 -i $(TESTARFF2) -o $(TEMPARFF)
+	@python classify.py $(TESTARFF2) $(JAVA) -classpath weka.jar weka.classifiers.functions.SMO -T $(TEMPARFF) -l $(FOURFIVEMODEL) -p 0
+	@rm $(TEMPARFF) $(TESTARFF2) -f
